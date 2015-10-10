@@ -1,0 +1,23 @@
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>UserAdd</title>
+</head>
+<body>
+<h1>欢迎来到用户添加界面</h1>
+<form action="UserAdd.js" method="post">
+		学号：<input name="studid" type="text" class="inputtxt" size="10" pattern="B\d{8}$" required/><br>
+		<p class="p_color">请输入学号：以B开头，共9位</p>
+		姓名：<input name="studname" type="text" class="inputtxt" size="20" required/><br>
+		<p class="p_color">请输入姓名，用英文输入</p>
+		学院：<input name="studcollege" type="text" class="inputtxt" size="30" required/><br>
+		<p class="p_color">请输入学院，用英文输入</p>
+		专业：<input name="studmajor" type="text" class="inputtxt" size="30" required/><br>
+		<p class="p_color">请输入专业，用英文输入</p>
+		备注： <input name="note" type="text" class="inputtxt" size="50"/><br>
+		<p class="p_color">非必须填写字段</p>
+
+		<input type="submit" value="提交" ></input>
+</form>
+</body>
+</html>
