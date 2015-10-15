@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `act`;
 
 CREATE TABLE `act` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `userId` int(11) NOT NULL COMMENT '学生学号',
+  `userId` int(11) NOT NULL COMMENT '外键，指向user表的id，表明此活动属于哪一个用户',
   `startTime` datetime NOT NULL COMMENT '某项活动开始的时间',
   `endTime` datetime NOT NULL COMMENT '某项活动结束的时间',
   `actDetail` varchar(1000) DEFAULT NULL COMMENT '活动的具体内容',
