@@ -2,7 +2,8 @@
 SQLyog Enterprise - MySQL GUI v8.14 
 MySQL - 5.6.26 : Database - openlab
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -22,29 +23,25 @@ DROP TABLE IF EXISTS `act`;
 
 CREATE TABLE `act` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `userId` int(11) NOT NULL COMMENT '外键，指向user表的id，表明此活动属于哪一个用户',
+  `userId` int(11) NOT NULL COMMENT '学生学号',                   
   `startTime` datetime NOT NULL COMMENT '某项活动开始的时间',
   `endTime` datetime NOT NULL COMMENT '某项活动结束的时间',
   `actDetail` varchar(1000) DEFAULT NULL COMMENT '活动的具体内容',
   `result` varchar(1000) DEFAULT NULL COMMENT '活动的成果',
   `resp` varchar(1000) DEFAULT NULL COMMENT '教师的评价',
   PRIMARY KEY (`id`),
-  KEY `userId` (`userId`),
-  CONSTRAINT `act_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE
+  foreign KEY (userId) references user(Id)
+	on delete cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='活动表';
 
 /*Data for the table `act` */
-
-LOCK TABLES `act` WRITE;
-
-UNLOCK TABLES;
 
 /*Table structure for table `user` */
 
 DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',                  
   `studId` varchar(11) NOT NULL COMMENT '学生学号',
   `studName` varchar(30) NOT NULL COMMENT '学生姓名',
   `college` varchar(30) NOT NULL COMMENT '所在学院',
@@ -54,10 +51,6 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 /*Data for the table `user` */
-
-LOCK TABLES `user` WRITE;
-
-UNLOCK TABLES;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -49,6 +49,24 @@ var app = http.createServer(function(req, res ){
 			break;
 			
 			
+			case "/Delete.html":
+			fs.readFile("Delete.html",function(err ,data){
+				if(err) throw err;
+				res.writeHeader(200,{"Content-Type":"text/html"});
+				res.end(data.toString());
+			});
+			break;
+			
+			
+			case "/Alter.html":
+			fs.readFile("Alter.html",function(err ,data){
+				if(err) throw err;
+				res.writeHeader(200,{"Content-Type":"text/html"});
+				res.end(data.toString());
+			});
+			break;
+			
+			
 			case "/ActDisp.html":
 			var selectSQL = "select * from act";
 						
@@ -59,8 +77,8 @@ var app = http.createServer(function(req, res ){
 				if(result.length > 0){
 					var firstresult = "";
 					
-					var	strHTML ="<html><head><title>ActDisplay</title></head><boby><fieldset>";
-						strHTML+="<legend>user-activity display</legend>";
+					var	strHTML ="<html><head><meta charset='utf-8'><title>用户活动展示界面</title></head><boby><p><a href='Index.html'>首页Index</a></p><fieldset>";
+						strHTML+="<legend>用户活动信息</legend>";
 						strHTML+="<table border='1' bordercolor='#009900'>";
 						strHTML+= "<tr><td>id</td>";
 						strHTML+= "<td>userid</td>";
@@ -77,15 +95,19 @@ var app = http.createServer(function(req, res ){
 						
 						strHTML+= "<tr>";
 						strHTML+= "<td>"+firstresult["id"]+"</td>";
-						strHTML+= "<td>"+firstresult["userid"]+"</td>";
-						strHTML+= "<td>"+firstresult["starttime"]+"</td>";
+						strHTML+= "<td>"+firstresult["userId"]+"</td>";
+						strHTML+= "<td>"+firstresult["startTime"].toGMTString()+"</td>";
 						strHTML+= "<td>"+firstresult["actDetail"]+"</td>";
 						strHTML+= "<td>"+firstresult["result"]+"</td>";
 						strHTML+= "<td>"+firstresult["resp"]+"</td>";
-						strHTML+= "<td>"+firstresult["endtime"]+"</td>";
-						strHTML+= "</tr></table>";
+						strHTML+= "<td>"+firstresult["endTime"].toGMTString()+"</td>";
+						strHTML+= "</tr>";
 					}
-					strHTML += "</fieldset></body></html>";
+					strHTML += "</table></fieldset>";
+					strHTML +="<table><tr><td><button><a href='/UserAct.html'>添加</a></button></td>";
+					strHTML +="<td><button><a href='/Delete.html'>删除</a></button></td>";
+					strHTML +="<td><button><a href='/Alter.html'>修改</a></button></td>";
+					strHTML +="<td><button><a href='/ActDisp.html'>刷新</a></button></td></tr></table></body></html>";
 					res.writeHeader(200,{"Content-Type":"text/html"});
 					res.end(strHTML.toString());					
 				}
@@ -161,6 +183,52 @@ var app = http.createServer(function(req, res ){
 			//console.log(myDate.toLocaleString());
 			break;
 			
+			case '/Delete.js':
+			
+			postData = "";
+			req.on("data" ,function(chunck){
+				postData += chunck;
+			});
+			req.on("end",function(){
+				var website2 = qs.parse(postData);
+				var DeleteSQL = "delete from act where userId='"+website2.userid+"'";
+				
+				connection.query(DeleteSQL,function(err2,res2){
+					if(err2) console.log(err2);
+					console.log("Delete Return==> ");
+					console.log(res2);
+				});
+			});
+			res.end(postData);
+			break;
+			
+			case '/Alter.js':
+			
+			postData = "";
+			
+			req.on("data" ,function(chunck){
+				postData += chunck;
+			});
+			end = myDate.toLocaleString();
+			
+			req.on("end" ,function(){
+				var website2 = qs.parse(postData);
+				console.log(website2.userid);
+				console.log(website2.result);
+				console.log(website2.resp);
+				console.log(website2.actDetail);
+				console.log("修改时间"+end);
+				
+				//var insertSQl2 = "insert into act(userid,starttime,endtime,actDetail,result,resp) value('"+website2.userid+"','"+start+"','"+end+"','"+website2.actDetail+"','"+website2.result+"','"+website2.resp+"')";
+				var AlterSQL = "update act set endtime='"+end+"',actDetail='"+website2.actDetail+"',result='"+website2.result+"',resp='"+website2.resp+"' where userId='"+website2.userid+"'";
+				connection.query(AlterSQL,function(err1,res1){
+					if(err1) console.log(err1);
+					console.log("Alter Return==> ");
+					console.log(res1);
+				});
+				res.end(postData);
+			});
+			break;
 		}
 	}
 });
